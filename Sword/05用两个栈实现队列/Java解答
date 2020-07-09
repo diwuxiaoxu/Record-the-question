@@ -1,0 +1,27 @@
+用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
+
+解析：
+  如果队列元素是一次性输入完，push操作则直接stack1进行压入，pop则是将stack1倒入stack2中，stack2进行pop；
+  但队列元素不是一次性输入，所以在push的过程中，需要将stack2的元素不断的倒回到stack1中，保持输入数据的顺序。
+  
+  import java.util.Stack;
+
+public class Solution {
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+    
+    public void push(int node) {
+        //队列元素不是一次性输入
+        while(!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
+        stack1.push(node);
+    }
+    
+    public int pop() {
+        while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+        }
+        return stack2.pop();
+    }
+}
