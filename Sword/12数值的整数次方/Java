@@ -1,0 +1,30 @@
+给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+
+保证base和exponent不同时为0
+
+解析：
+
+  很明显，如果是之间连续相乘的话，一定会超时，所以考虑使用折半的方式；
+  
+  在每次次方的时候，考虑使用exponent/2，而base则等于base *base；
+  
+  在具体的实现过程中，首先要考虑exponent的正负；
+  
+  其次在迭代的每一步中，都要考虑exponent是否可以被2整除，如果可以则直接是base *base，如果不可以，则需要再添加一个base
+  
+  public class Solution {
+    public double Power(double base, int exponent) {
+        boolean isPositive = true;
+        if (exponent < 0){
+            isPositive = false;
+            exponent = -exponent;
+        }
+        
+        if (exponent == 0) return 1;
+        if (exponent == 1) return base;
+        double res = Power(base * base , exponent/2);
+        if (exponent % 2 !=0) res *= base;
+        return isPositive ? res : (1/res);
+        
+  }
+}
