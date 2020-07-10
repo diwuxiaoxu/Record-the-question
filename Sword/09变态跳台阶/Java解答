@@ -2,7 +2,7 @@
 
 解析：
   sum记录下i-1总共有多少种跳法
-
+  f(n) = 2f(n-1)
 public class Solution {
     public int JumpFloorII(int target) {
         if(target == 0){
