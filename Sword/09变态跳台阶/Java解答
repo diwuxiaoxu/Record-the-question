@@ -13,7 +13,7 @@ public class Solution {
         }
         int sum = 0;
         for(int i=1; i<= target;i++){
-            sum = sum + JumpFloorII(i-1);
+            sum = 2* JumpFloorII(i-1);
         }
         return sum;
     }
