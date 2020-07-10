@@ -1,0 +1,32 @@
+输入一个链表，输出该链表中倒数第k个结点。
+
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        //倒数第k个结点，即为正数第L-K个
+        if (head == null) return null;
+        ListNode p = head;
+        int count =0;
+        while(p != null){
+            p = p.next;
+            count++;
+        }
+        //count为链表的长度
+        if (k > count) return null;
+        int num = 0;
+        while(num < count-k ){
+            head = head.next;
+            num++;
+        }
+        return head;
+        
+    }
+}
