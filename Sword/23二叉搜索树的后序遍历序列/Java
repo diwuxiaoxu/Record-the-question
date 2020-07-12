@@ -1,0 +1,34 @@
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+
+解析：
+
+  二叉搜索树的特点：左<根<右
+  
+  通过对序列的划分，不断迭代，划分为左右子树，后序遍历最后一个结点即为根节点，根据根节点划分左右子树，
+  
+  小于根节点的为左子树，大于根节点的为右子树
+  
+  public class Solution {
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        //根据二叉搜索树的特点，左<根<右，不断的划分后序遍历序列
+        if (sequence == null || sequence.length ==0) return false;
+        int right = sequence.length-1;
+        return verify(sequence, 0, right);
+    }
+    
+    public boolean verify(int[] sequence, int left,int right){
+        //递归
+        if (left >= right) return true;
+        int temp = sequence[right];
+        int index = left;
+        //左子树范围为[left,index-1]
+        while(sequence[index] < temp && index < right){
+            index ++;
+        }
+        //右子树范围[index,right-1]
+        for(int i=index; i<right; i++){
+            if (sequence[i] <= temp) return false;
+        }
+        return verify(sequence,left,index-1) && verify(sequence,index,right-1);
+    }
+}
