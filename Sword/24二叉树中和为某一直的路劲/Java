@@ -1,0 +1,55 @@
+
+输入一颗二叉树的根节点和一个整数，按字典序打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+
+解析:
+
+ 从根节点--叶子结点，使用dfs,
+ 因为要考虑结点val的和，所以在回溯的过程中需要剪枝
+ 
+ 递归：终止条件 root==null
+ 
+ 中间判断： if(target == 0 且 root的左右子树均为空）则将该路径加入到res中
+ 
+ 回溯：如果target<0 或者root==null 则path.remove(path.size()-1) 即去掉路径中的最后一个结点，然后再回到上一步，继续执行
+ 
+ import java.util.ArrayList;
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    //DFS+回溯
+    ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        if (root == null) return res;
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        dfs(path,root,target);
+        return res;
+    }
+    public void dfs(ArrayList<Integer> path,
+                                           TreeNode root,
+                                            int target){
+        if(root == null) return ;
+        int value = target - root.val;
+        path.add(root.val);
+        if (value == 0 && root.left == null && root.right == null){
+            res.add(new ArrayList<Integer>(path));
+        }
+        else if (value > 0){
+            dfs(path, root.left, value);
+            dfs(path, root.right, value);
+        }
+        path.remove(path.size() -1);
+        
+    }
+}
