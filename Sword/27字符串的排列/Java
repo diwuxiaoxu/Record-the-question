@@ -1,0 +1,47 @@
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+输入描述:
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+
+解析：
+
+import java.util.*;
+public class Solution {
+    
+    ArrayList<String> res = new ArrayList<>();
+    
+    public ArrayList<String> Permutation(String str) {
+       //回溯法--树的深搜+剪枝
+        if (str == null || str.length() == 0) return res;
+        //将字符串转化为字符数组，记住这个api函数str.toCharArray();
+        char[] chars = str.toCharArray();
+        //对字符数组进行排序
+        Arrays.sort(chars);
+        //声明一个boolean数组，数组长度为字符串长度，用于剪枝操作
+        boolean[] used = new boolean[chars.length];
+        //声明一个可变的StringBuilder变量，用于存储每次得到的string变量
+        StringBuilder newString = new StringBuilder();
+        BackTrace(chars, used, newString);
+        return res;
+    }
+    public void BackTrace(char[] chars, boolean[] used, StringBuilder newString){
+        if (newString.length() == chars.length){
+            res.add(newString.toString());
+            return;
+        }
+        for(int i=0; i<chars.length; i++){
+            //剪枝操作，如果当前节点已经被访问过，则跳过
+            if(used[i]) continue;
+            //字符串中出现重复字符的情况
+            if(i !=0 && chars[i] == chars[i-1] && used[i-1]) continue;
+            
+            //如果当前字符没有被使用过
+            used[i] = true;
+            //记住StringBuilder增加数据使用append()
+            newString.append(chars[i]);
+            BackTrace(chars, used, newString);
+            //回溯到上一步时，去掉newString中的最后一个元素,deleteCharAt()
+            newString.deleteCharAt(newString.length()-1);
+            used[i] = false;
+        }
+    }
+}
