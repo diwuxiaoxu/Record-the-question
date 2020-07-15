@@ -1,0 +1,31 @@
+题目描述
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+
+解析：
+
+整数数组不好比较，使用api函数String.valueOf()将int型数据转化为String类型数组
+
+然后通过sort函数，重写compareTo（）函数，得到排序后的string数组
+
+
+
+import java.util.*;
+
+public class Solution {
+    public String PrintMinNumber(int [] numbers) {
+        //把int[]转变为string[]数组,然后将string数组排序，最后将string数组拼接起来
+        String[] newString = new String[numbers.length];
+        for(int i=0; i<numbers.length; i++){
+            //String.valueOf()将基本数据类型转变为String类型
+            newString[i] = String.valueOf(numbers[i]);
+        }
+        //如果s1+s2 > s2+s1, 则s1 > s2; 否则s1 < s2;
+        Arrays.sort(newString,(s1,s2) -> (s1+s2).compareTo(s2 +s1));
+        StringBuilder res = new StringBuilder();
+        for (int i=0; i< numbers.length; i++){
+            res.append(newString[i]);
+        }
+        return res.toString();
+    }
+}
