@@ -1,0 +1,65 @@
+题目描述
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+
+解析：
+
+使用归并排序，先拆分数组，然后再进行合并
+
+再合并的过程中，如果出现左边第一个数字大于右边第一个数字，则说明左边的剩下的数字都可以与右边组成逆序对
+
+public class Solution {
+    public long res = 0;
+    public int[] temp;
+    public int InversePairs(int [] array) {
+        //归并排序
+        //先切分，再合并，合并的过程中进行比较
+        int len = array.length;
+        temp = new int[array.length];
+        splitArray(array,0,len-1);
+        return (int)(res %1000000007);
+    }
+    public void splitArray(int[] array, int left, int right){
+        if (left == right) return;
+        int mid = left + (right - left) /2;
+        //左边
+        splitArray(array,left, mid);
+        //右边
+        splitArray(array,mid+1,right);
+        //左右合并
+        MergeArray(array,left,mid,right);
+    }
+    public void MergeArray(int[] array, int left, int mid, int right){
+        
+        int i = left;
+        int j = mid +1;
+        int k = left;
+        while(i <= mid || j <= right){
+            //如果是单个元素，只有右边
+            if (i > mid){
+                temp [k] = array[j];
+                j++;
+            }
+            //只有左边
+            else if(j > right){
+                temp[k] = array[i];
+                i++;
+            }
+            else if (array[i] > array[j]){
+                //左边的就都大于右边的
+                temp[k] = array[j];
+                j++;
+                res += mid -i +1;
+            }else{
+                //将较小值放入temp数组中
+                temp[k] = array[i];
+                i++;
+            }
+            k++;
+        }
+        //将排好序的数组放入array数组中
+        for(int n=left; n<= right; n++){
+            array[n] = temp[n];
+        }
+    }
+}
