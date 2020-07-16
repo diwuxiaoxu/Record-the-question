@@ -3,7 +3,7 @@
 
 解析：
 
- 使用HashMap结构，构造char-->index的map，
+ 使用HashMap结构，构造char-->count的map，
  
  import java.util.*;
 public class Solution {
