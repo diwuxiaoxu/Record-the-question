@@ -1,0 +1,19 @@
+//num1,num2分别为长度为1的数组。传出参数
+//将num1[0],num2[0]设置为返回结果
+import java.util.*;
+public class Solution {
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+        //使用set集合
+        Set<Integer> set = new HashSet<>();
+        for ( int i = 0; i < array.length; i++){
+            if (set.contains(array[i])){
+                set.remove(array[i]);
+            }else {
+                set.add(array[i]);
+            }
+        }
+        Iterator<Integer> it = set.iterator();
+        num1[0] = it.next();
+        num2[0] = it.next();
+    }
+}
