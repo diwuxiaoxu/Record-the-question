@@ -1,0 +1,48 @@
+public class Solution {
+    public int GetNumberOfK(int [] array , int k) {
+       //有序数组，使用二分查找，可以先搜索k出现的起始位置和结束位置
+        int res = 0;
+        int len = array.length;
+        if (len == 0 ) return 0;
+        int startIndex = Start_k(array,0,len-1,k);
+        int endIndex = End_k(array,0,len-1,k);
+        if (startIndex != -1 && endIndex != -1){
+            res = endIndex - startIndex +1;
+        }
+        return res;
+    }
+    public int Start_k(int[] array, int left, int right,int k){
+        
+        while(left <= right){
+            int mid = left + (right - left) /2;
+            if (array[mid] < k){
+                left = mid+1;
+            }
+            else if(array[mid] > k){
+                right = mid -1;
+            }else if(mid-1 >= 0 && array[mid-1] == k ){
+                right = mid -1;
+            }
+            else 
+                return mid;
+        }
+        return -1;
+    }
+    public int End_k(int[] array, int left, int right,int k){
+         
+        while(left <= right){
+            int mid = left + (right - left) /2;
+            if (array[mid] < k){
+                left = mid+1;
+            }
+            else if(array[mid] > k){
+                right = mid -1;
+            }else if(mid+1 < array.length && array[mid+1] == k ){
+                left = mid +1;
+            }
+            else 
+                return mid;
+        }
+        return -1;
+    }
+}
