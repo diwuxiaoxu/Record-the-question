@@ -1,0 +1,47 @@
+题目描述
+输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
+输出描述:
+对应每个测试案例，输出两个数，小的先输出。
+
+解析：
+
+使用HashMap建立出index-value的映射
+
+注：需要考虑如果不存在这两个数字的情况
+
+import java.util.HashMap;
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) {
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+        ArrayList<Integer> res = new ArrayList<>();
+        for(int i=0; i<array.length; i++){
+            map.put(i, array[i]);
+        }
+        int min = Integer.MAX_VALUE;
+        int value1 =0;
+        int value2 =0;
+        for(int i=0; i<array.length; i++){
+            int temp = sum - array[i];
+            if ( map.containsValue(temp)){
+                value1 = array[i];
+                value2 = temp;
+                int result = value1 * value2;
+                if (result < min)  min = result; 
+            }
+        }
+        if (value1 == 0 && value2 == 0){
+            return res;
+        }
+        else if (value1 > value2){
+            res.add(value2);
+            res.add(value1);
+        }
+        else{
+            res.add(value1);
+            res.add(value2);
+        }
+        return res;
+    }
+}
