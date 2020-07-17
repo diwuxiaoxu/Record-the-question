@@ -1,0 +1,26 @@
+题目描述
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+
+在这里，我们只需要考虑其平衡性，不需要考虑其是不是排序二叉树
+
+解析：
+
+只需要理解平衡二叉树的概念:即左右子树的高度相差不能超过1，所以需要判断左右子树的高度，然后再递归的分别判断左右节点是否满足该条件
+
+public class Solution {
+    public boolean IsBalanced_Solution(TreeNode root) {
+        if (root == null ){
+            return true;
+        }
+        int leftHight = TreeHigh(root.left);
+        int rightHight = TreeHigh(root.right);
+        if (Math.abs((leftHight - rightHight)) <= 1) {
+            return IsBalanced_Solution(root.left) && IsBalanced_Solution(root.right);
+        }
+        else return false;
+    }
+    public int TreeHigh(TreeNode root){
+        if (root == null) return 0;
+        return Math.max(TreeHigh(root.left), TreeHigh(root.right)) +1;
+    }
+}
