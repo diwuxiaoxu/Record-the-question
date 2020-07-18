@@ -1,0 +1,10 @@
+public class Solution {
+    public String LeftRotateString(String str,int n) {
+        //比较技巧性
+        int len = str.length();
+        if(str == null || str.length() ==0) return "";
+        n = n % str.length();
+       str += str;
+        return str.substring(n,len+n);
+    }
+}
