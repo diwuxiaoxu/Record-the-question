@@ -1,0 +1,54 @@
+题目描述
+请实现一个函数用来匹配包括'.'和'*'的正则表达式。模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）。 
+在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
+
+解析：
+
+这题的关键就是 a*它在a匹配的情况下，有三种可能 0,a,aa；
+如果没有* ，a匹配，则同步前进，a不匹配，则直接return false；
+
+public class Solution {
+   //重点是考虑第二个字符是否为“*”
+    //匹配：字符串中的所有字符匹配整个模式：所以如果模式的长度为0，而字符串的长度不为0，则说明是false
+    //而如果字符串长度为0，模式不为0，需要考虑模式中是否存在字符“*”且长度为2；
+    public boolean match(char[] str, char[] pattern)
+    {
+        if ( str == null || pattern == null) return false;
+        if ( str.length == 0 && pattern.length == 0) return true;
+        if ( str.length != 0 && pattern.length == 0) return false;
+        if ( str.length == 0){
+            if ( pattern.length == 2&& pattern[1] == '*') return true;
+            else return false;
+        }
+        return matchCore(str, 0, pattern, 0);
+    }
+    private boolean matchCore(char[] str, int sIndex, char[] pattern, int pIndex) {
+        //索引指针都到最后一位，则说明完全匹配
+        if(sIndex == str.length && pIndex == pattern.length) return true;
+         //如果字符串索引未到底，而模式索引到底，则说明字符串没有完全匹配该模式
+        if(sIndex != str.length && pIndex == pattern.length) return false;
+         //第二个字符为*
+        if((pIndex + 1) < pattern.length && pattern[pIndex + 1] == '*') {
+            //当前字符匹配成功，则存在三种可能
+            if((sIndex < str.length && str[sIndex] == pattern[pIndex])
+                    || (pattern[pIndex] == '.' && sIndex < str.length)) {
+                 
+                return matchCore(str, sIndex + 1, pattern, pIndex + 2) //x*认为匹配1个字符
+                        || matchCore(str, sIndex + 1, pattern, pIndex) //x*认为匹配多个字符，即str可能连续字符相等
+                        || matchCore(str, sIndex, pattern, pIndex + 2); //x*认为匹配0个字符，
+            }else{
+                return matchCore(str, sIndex, pattern, pIndex + 2);
+            }
+        }
+        //第二个字符不为*
+            //有两种情况，如果当前字符匹配，则继续往后走
+        if((sIndex < str.length && str[sIndex] == pattern[pIndex])
+                || (pattern[pIndex] == '.' && sIndex < str.length)) {
+             
+            return matchCore(str, sIndex + 1, pattern, pIndex + 1);
+        }else{
+            //如果当前字符不匹配，则return false；
+            return false;
+        }
+    }
+}
