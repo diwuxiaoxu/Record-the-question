@@ -1,0 +1,40 @@
+题目描述
+将一个字符串转换成一个整数，要求不能使用字符串转换整数的库函数。 数值为0或者字符串不是一个合法的数值则返回0
+输入描述:
+输入一个字符串,包括数字字母符号,可以为空
+输出描述:
+如果是合法的数值表达则返回该数字，否则返回0
+示例1
+输入
++2147483647
+1a33
+输出
+2147483647
+0
+
+解析：
+
+ 首先是将字符串转变为字符数组，str.toCharArray()，然后根据输入样例可以发现第一位有三种可能 “+”， “-” “数字”；
+
+ 需要标志位来判断首字符是否为符号，并且为哪种符号；
+ 然后顺序遍历字符数组，进行加和操作
+ 
+ public class Solution {
+    public int StrToInt(String str) {
+        boolean flag = true;
+        if (str.length()==0) return 0;
+        char [] chars = str.toCharArray();
+        if (chars[0] == '-') flag = false;
+        int sum = 0;
+        for(int i=0; i<chars.length; i++){
+        //首字符可能是数字，因此需要从头开始遍历，但也要排除首字符为字符的可能
+            if (i==0 && (chars[i] == '+' || chars[i] == '-')) continue;
+            if (chars[i] >= '0' && chars[i] <='9'){
+                sum = sum *10 + (chars[i] - '0');
+            }
+            else return 0;
+        }
+        if (flag) return sum;
+        else return -sum;
+    }
+}
