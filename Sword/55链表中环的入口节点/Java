@@ -1,0 +1,37 @@
+解析：
+
+  进一步分析题目，可以发现，如果我们一直遍历链表，那么出现的第一个重复节点，即为环的入口节点
+  
+  而如果出现重复的问题，那么set集合，是个好的方法。
+  
+  /*
+ public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+*/
+import java.util.*;
+public class Solution {
+
+    public ListNode EntryNodeOfLoop(ListNode pHead)
+    {
+        if(pHead == null || pHead.next == null) return null;
+        //有环，说明如果我们一直遍历链表，就出出现重复节点，第一个重复节点即为环的入口
+        ListNode node = pHead;
+        Set<ListNode> set = new HashSet<>();
+        while(node != null){
+            if (set.contains(node)){
+                return node;
+            }
+            else {
+                set.add(node);
+                node = node.next;
+            }
+        }
+        return null;
+    }
+}
