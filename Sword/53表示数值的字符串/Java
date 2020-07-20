@@ -1,0 +1,69 @@
+题目描述
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。 但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
+
+解析：
+
+  题目的主要关键点就是判断字符：符号，小数点，e的个数和位置
+  
+  符号： 如果符号（signal）只出现一次： 在第一位出现，signal = true，跳出本次循环；
+                                      不在第一位出现，那么它的前面一定要是e/E,否则return false;
+        如果符号位出现两次，第一次一定是首位，第二次要判断其前面是否为e/E;
+  
+  小数点：  小数点不能超过两个；
+           如果出现小数点和e/E，那么小数点一定是在e/E的后面
+  
+  e：  不能有两个e；
+      e的后面一顶有数，所以不能是最后一个
+      
+  public class Solution {
+    public boolean isNumeric(char[] str) {
+        int len = str.length;
+       if (len == 0) return false;
+       boolean signal = false;
+       boolean decimal = false;
+       boolean hasE = false;
+        for(int i=0; i<len; i++){
+            if (str[i] == '+' || str[i] == '-'){
+                //第一次出现符号且符号在第一位
+                if(i == 0 ) {
+                    signal = true;
+                    continue;
+                }
+                //第一次出现符号,如果不是出现在第一位，并且signal的前一位只能是e/E
+                if (!signal && i >0 && str[i-1] != 'E' && str[i-1] != 'e'){
+                    return false;
+                }
+                //如果是第二次出现符号，则signal的前一位只能是e/E
+                if (signal && str[i-1] != 'E' && str[i-1] != 'e'){
+                    return false;
+                }
+            }
+            else if(str[i] == '.'){
+                //不能有两个小数点
+                if (decimal) return false;
+                //在小数点出现之前，已经有e/E的存在，则小数点不能出现在e或E的后面
+                if (hasE){
+                    for(int j=i ;j>=0;--j){
+                        if (str[j-1] == 'E' || str[j-1] == 'e')
+                            return false;
+                    }
+                }
+                decimal = true;
+            }
+            else if(str[i] == 'E' || str[i] == 'e'){
+                //不能有两个e/E
+                if(hasE) return false;
+                //e/E的后面一定要有数字
+                if (i == len-1){
+                    return false;
+                }
+                hasE = true;
+            }
+            else if (str[i] < '0' || str[i] > '9'){
+                return false;
+            }
+        }
+        return true;
+    }
+}
