@@ -1,0 +1,35 @@
+题目描述
+请实现一个函数，用来判断一棵二叉树是不是对称的。
+注意，如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。
+
+解析：
+  类似于前面的镜像二叉树，左节点的左节点与右节点的右节点，左孩子的右节点与右节点的左节点
+  
+  /*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    boolean isSymmetrical(TreeNode pRoot)
+    {
+        //类似于镜像二叉树
+        if (pRoot == null) return true;
+        return isSymmetricalTree(pRoot.left, pRoot.right);
+    }
+    boolean isSymmetricalTree(TreeNode root1, TreeNode root2){
+        if (root1 == null && root2 == null) return true;
+        if (root1 == null) return false;
+        if (root2 == null) return false;
+        if (root1.val != root2.val) return false;
+        return isSymmetricalTree(root1.left, root2.right) && isSymmetricalTree(root1.right, root2.left);
+    }
+}
