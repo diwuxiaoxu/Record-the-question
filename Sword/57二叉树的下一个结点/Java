@@ -1,0 +1,49 @@
+题目描述
+给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
+注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针
+
+解析：
+
+  如果该节点的右孩子不为空：
+      如果右孩子的左孩子为空，则返回右节点；
+      如果右节点的左节点不为空，则返回右孩子的最左节点；
+  如果该节点的右节点为空：
+      如果该节点的父亲节点不为空，且该节点为父节点的左节点，则返回父节点；
+                                且该节点为父节点的右节点，则找父节点的父节点。
+                                
+/*
+public class TreeLinkNode {
+    int val;
+    TreeLinkNode left = null;
+    TreeLinkNode right = null;
+    TreeLinkNode next = null;
+
+    TreeLinkNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+    public TreeLinkNode GetNext(TreeLinkNode pNode)
+    {
+        if(pNode == null) return null;
+        if (pNode .right != null){
+            pNode = pNode.right;
+            while (pNode.left != null){
+                pNode = pNode.left;
+            }
+            return pNode;
+        }
+        else{
+            while(pNode.next != null){
+                if (pNode == pNode.next.left){
+                return pNode.next;
+                }
+                else{
+                    pNode = pNode.next;
+                }
+            }
+        }
+        return null;
+    }
+}
